@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LILA BLACK — Player Journeys</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+  <a class="skip-link" href="#stage">Skip to map</a>
+
+  <div class="app">
+
+    <!-- 1. Top bar: what the tool is, what data is loaded, global actions -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand__logo" aria-hidden="true">◆</span>
+        <div>
+          <h1 class="brand__title">Player Journeys</h1>
+          <p class="brand__sub">LILA BLACK · level design telemetry</p>
+        </div>
+      </div>
+
+      <p class="dataset-chip" id="dataset-chip" role="status" aria-live="polite">Loading data…</p>
+
+      <div class="topbar__actions">
+        <button class="button button--primary" id="btn-add-data" type="button" disabled>Add data</button>
+        <button class="button button--ghost" id="btn-share" type="button" disabled>Copy link to view</button>
+      </div>
+    </header>
+
+    <!-- 2. Sidebar: choose what to look at, which layers, and the summary -->
+    <aside class="sidebar" aria-label="Filters and layers">
+      <section class="panel" aria-labelledby="panel-filters">
+        <h2 class="panel__title" id="panel-filters">What to look at</h2>
+        <div id="filters">
+          <p class="hint">Pick a map, a date and a match once data is loaded.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="panel-layers">
+        <h2 class="panel__title" id="panel-layers">Layers</h2>
+        <div id="layers">
+          <p class="hint">Paths, event markers and heatmaps appear here.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="panel-summary">
+        <h2 class="panel__title" id="panel-summary">Summary</h2>
+        <div id="summary">
+          <p class="hint">Players, kills, deaths and loot for the current view.</p>
+        </div>
+      </section>
+
+      <p class="sidebar__credit">© 2026 Muskan Chauhan · All rights reserved</p>
+    </aside>
+
+    <!-- 3. Stage: the map, plus one state screen at a time over it -->
+    <main class="stage" id="stage" tabindex="-1" aria-label="Map">
+      <canvas class="stage__canvas" id="map-canvas" aria-label="Minimap with player journeys"></canvas>
+
+      <!-- Loading is visible in the HTML itself, so it shows before any JavaScript runs. -->
+      <div class="stage-state" id="state-loading" role="status">
+        <div class="spinner" aria-hidden="true"></div>
+        <p class="stage-state__title">Loading player data…</p>
+      </div>
+
+      <div class="stage-state" id="state-empty" hidden>
+        <p class="stage-state__title" id="state-empty-title">No data to show</p>
+        <p class="stage-state__text" id="state-empty-text"></p>
+      </div>
+
+      <div class="stage-state stage-state--error" id="state-error" role="alert" hidden>
+        <p class="stage-state__title">Something went wrong</p>
+        <p class="stage-state__text" id="state-error-text"></p>
+      </div>
+    </main>
+
+    <!-- 4. Timeline: play a match back over time -->
+    <footer class="timeline" aria-label="Match playback">
+      <button class="button button--primary timeline__play" id="btn-play" type="button" aria-label="Play" disabled>▶</button>
+
+      <p class="timeline__clock" aria-live="off">
+        <span id="time-now">0:00</span><span class="muted"> / <span id="time-end">0:00</span></span>
+      </p>
+
+      <label class="visually-hidden" for="scrub">Match time</label>
+      <input class="timeline__scrub" id="scrub" type="range" min="0" max="1" step="0.1" value="0" disabled>
+
+      <label class="timeline__speed">Speed
+        <select id="speed" disabled>
+          <option value="1">1×</option>
+          <option value="5">5×</option>
+          <option value="10" selected>10×</option>
+          <option value="30">30×</option>
+          <option value="60">60×</option>
+        </select>
+      </label>
+    </footer>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
