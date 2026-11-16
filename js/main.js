@@ -4,6 +4,8 @@ import { setStageState } from './ui/stage-state.js'
 import { loadMapConfigs } from './map/map-config.js'
 import { MapCanvas } from './map/map-canvas.js'
 import { checkOverlay } from './map/check-overlay.js'
+import { pathsOverlay } from './map/paths-overlay.js'
+import { loadDataset } from './data/load-dataset.js'
 
 const DEFAULT_MAP = 'AmbroseValley'
 
@@ -29,18 +31,27 @@ if (PREVIEWABLE.includes(preview)) {
 }
 
 async function start () {
-  const maps = await loadMapConfigs()
+  // Map settings and player data load in parallel.
+  const [maps, dataset] = await Promise.all([loadMapConfigs(), loadDataset()])
 
   // ?map=GrandRift picks the map until the map switcher exists.
   const mapId = maps[params.get('map')] ? params.get('map') : DEFAULT_MAP
   const map = maps[mapId]
+  const matches = dataset.matches.filter(m => m.map === mapId)
 
   const mapCanvas = new MapCanvas(document.getElementById('map-canvas'))
+  mapCanvas.overlays.push(pathsOverlay(() => matches))
   if (params.get('check') === 'mapping') mapCanvas.overlays.push(checkOverlay(map))
 
   await mapCanvas.setMap(map)
-  setStageState('ready')
 
-  // No player data is loaded yet, so the chip says which map is shown and nothing more.
-  datasetChip.textContent = `${map.name} · no player data loaded`
+  if (matches.length === 0) {
+    setStageState('empty', { title: `No matches on ${map.name}`, text: 'The loaded data has no matches on this map.' })
+  } else {
+    setStageState('ready')
+  }
+
+  const journeys = matches.reduce((n, m) => n + m.journeys.length, 0)
+  datasetChip.textContent =
+    `${map.name} · ${matches.length} matches · ${journeys} journeys · ${dataset.dates[0]} to ${dataset.dates.at(-1)}`
 }
