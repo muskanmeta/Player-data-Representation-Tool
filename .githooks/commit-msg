@@ -1,0 +1,14 @@
+#!/bin/sh
+# commit-msg hook: removes AI co-author trailer lines so every commit is attributed
+# to the personal git identity only. Git passes the path of the message file as $1.
+#
+# Enable once per clone:  git config core.hooksPath .githooks
+
+msg_file="$1"
+tmp_file="$msg_file.tmp"
+
+# Drop any "Co-Authored-By:" line that names an AI assistant (case-insensitive).
+grep -viE '^co-authored-by:.*(claude|anthropic|copilot|chatgpt|openai|cursor)' "$msg_file" > "$tmp_file"
+mv "$tmp_file" "$msg_file"
+
+exit 0

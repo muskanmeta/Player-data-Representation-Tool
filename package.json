@@ -1,0 +1,14 @@
+{
+  "name": "lila-player-journeys",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Player journey visualisation for LILA BLACK telemetry. Static site, no build step; Node runs the data tools and tests.",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "test": "node --test",
+    "serve": "node tools/serve.mjs"
+  }
+}

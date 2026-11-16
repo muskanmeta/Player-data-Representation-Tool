@@ -1,0 +1,19 @@
+# Raw telemetry never enters the repo. Only the processed sample in data/default/ is committed.
+player_data/
+*.nakama-0
+*.zip
+
+# Tool output (extract / audit / query). Regenerate with the commands in tools/README.md.
+out/
+
+# Personal interview notes, kept local only.
+study-notes/
+
+# Node
+node_modules/
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

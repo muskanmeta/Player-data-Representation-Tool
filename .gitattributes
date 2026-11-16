@@ -1,0 +1,8 @@
+# Store text with LF line endings so shell hooks and scripts run on every OS
+# (a CRLF line ending breaks the "#!/bin/sh" line of a hook).
+* text=auto eol=lf
+
+# Binary assets: never touch line endings.
+*.webp binary
+*.png  binary
+*.jpg  binary
