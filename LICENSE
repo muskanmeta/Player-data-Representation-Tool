@@ -1,0 +1,9 @@
+Copyright (c) 2026 Muskan Chauhan. All rights reserved.
+
+This repository is shared with LILA Games solely so that it can be reviewed and
+evaluated as part of a hiring assessment. No other right is granted: you may not
+use, copy, modify, merge, publish, distribute, sublicense or sell this software,
+in whole or in part, without the prior written permission of the copyright holder.
+
+Third-party code in vendor/ is used under its own licence (see the LICENSE file
+next to each library). The gameplay data and minimap images belong to LILA Games.
