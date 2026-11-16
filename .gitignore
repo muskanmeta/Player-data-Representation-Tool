@@ -6,7 +6,7 @@ player_data/
 # Tool output (extract / audit / query). Regenerate with the commands in tools/README.md.
 out/
 
-# Personal interview notes, kept local only.
+# Personal notes, kept local only.
 study-notes/
 
 # Node

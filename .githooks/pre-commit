@@ -1,0 +1,16 @@
+#!/bin/sh
+# pre-commit hook: refuses a commit that contains local-only files, even if they were
+# force-added with "git add -f" (which bypasses .gitignore).
+#
+# Enabled by the same setting as commit-msg:  git config core.hooksPath .githooks
+
+blocked=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '^(study-notes|\.claude)/')
+
+if [ -n "$blocked" ]; then
+  echo "Commit blocked: these files are local only and must not be committed:" >&2
+  echo "$blocked" | sed 's/^/  /' >&2
+  echo "Unstage them with:  git restore --staged <file>" >&2
+  exit 1
+fi
+
+exit 0
