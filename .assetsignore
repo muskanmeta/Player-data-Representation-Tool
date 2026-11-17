@@ -1,0 +1,15 @@
+# Files in the repo that should not be served by the static site.
+.git
+.githooks
+.gitattributes
+.gitignore
+node_modules
+test
+tools
+out
+study-notes
+player_data
+package.json
+package-lock.json
+wrangler.jsonc
+*.md

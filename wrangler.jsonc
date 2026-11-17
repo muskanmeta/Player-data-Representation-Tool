@@ -1,0 +1,9 @@
+{
+  // Static site served by Cloudflare Workers (no build step, no Worker script).
+  // "name" must match the Worker name in the Cloudflare dashboard.
+  "name": "playersjourney",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "."
+  }
+}
