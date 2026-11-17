@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "about": "World-to-minimap settings per map_id, from the data README. u = (x - originX) / scale, v = (z - originZ) / scale; image pixel = (u * width, (1 - v) * height). Add an entry when a new map ships.",
+  "maps": {
+    "AmbroseValley": {
+      "name": "Ambrose Valley",
+      "image": "assets/minimaps/AmbroseValley.webp",
+      "scale": 900,
+      "originX": -370,
+      "originZ": -473
+    },
+    "GrandRift": {
+      "name": "Grand Rift",
+      "image": "assets/minimaps/GrandRift.webp",
+      "scale": 581,
+      "originX": -290,
+      "originZ": -290
+    },
+    "Lockdown": {
+      "name": "Lockdown",
+      "image": "assets/minimaps/Lockdown.webp",
+      "scale": 1000,
+      "originX": -500,
+      "originZ": -500
+    }
+  }
+}
