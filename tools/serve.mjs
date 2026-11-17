@@ -11,7 +11,8 @@ import { readFile, stat } from 'node:fs/promises'
 import { extname, join, normalize, resolve, sep } from 'node:path'
 
 const ROOT = resolve(import.meta.dirname, '..')
-const PORT = Number(process.argv[2]) || 8000
+// Port: command-line argument, else the PORT environment variable (set by preview tools), else 8000.
+const PORT = Number(process.argv[2]) || Number(process.env.PORT) || 8000
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',

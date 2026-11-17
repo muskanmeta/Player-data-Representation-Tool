@@ -84,12 +84,13 @@ const lines = [
   `  multi-folder matches    ${h.multi_folder_matches.length}`,
   `  single-journey matches  ${h.single_journey_matches}`,
   `  points outside map      ${h.points_outside_map}`,
+  `  matches with 2+ maps    ${h.mixed_maps.length}`,
   `  unknown maps / events   ${h.unknown_maps.length} / ${h.unknown_events.length}`,
   `Wrote ${relative(ROOT, outFile)}: ${kb(json.length)} (${kb(gzipSync(json).length)} gzipped)`,
   `Details: ${relative(ROOT, reportFile)}`
 ]
 console.log(lines.join('\n'))
 
-const critical = s.files_failed > 0 || h.unknown_maps.length > 0
-if (critical) console.error('Critical: some files failed or a map has no settings in data/maps.json')
+const critical = s.files_failed > 0 || h.unknown_maps.length > 0 || h.mixed_maps.length > 0
+if (critical) console.error('Critical: some files failed, a map has no settings in data/maps.json, or a match names two maps')
 process.exit(critical ? 1 : 0)

@@ -82,3 +82,13 @@ test('the output is deterministic regardless of input order', () => {
   const b = { file: 'F/b', folder: null, journey: journey('b', 'm2', [row(1)]) }
   assert.equal(JSON.stringify(buildDataset([a, b], { maps: MAPS })), JSON.stringify(buildDataset([b, a], { maps: MAPS })))
 })
+
+test('one match, one map: a match whose journeys name different maps is flagged', () => {
+  const a = { ...journey('a', 'm1', [row(0)]), mapIds: ['AmbroseValley'] }
+  const b = { ...journey('b', 'm1', [row(1)]), mapId: 'Lockdown', mapIds: ['Lockdown'] }
+  const d = buildDataset([
+    { file: 'a_m1', folder: null, journey: a },
+    { file: 'b_m1', folder: null, journey: b }
+  ], { maps: MAPS })
+  assert.deepEqual(d.health.mixed_maps, [{ match_id: 'm1', map_ids: ['AmbroseValley', 'Lockdown'] }])
+})

@@ -161,7 +161,7 @@
 .timeline {
   grid-area: timeline;
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto auto;
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-2) var(--space-4);
@@ -208,5 +208,20 @@
 @media (max-width: 1400px) {
   :root {
     --sidebar-width: 280px;
+  }
+}
+
+/* Down to 1024 px: drop the keyboard hint and let the top bar wrap. */
+@media (max-width: 1180px) {
+  .timeline__keys {
+    display: none;
+  }
+
+  .timeline {
+    grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
   }
 }

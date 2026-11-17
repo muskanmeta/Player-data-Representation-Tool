@@ -40,6 +40,7 @@ export function buildDataset (inputs, { maps = {} } = {}) {
     id_conflicts: [],          // numeric ID that behaves like a human (or the reverse)
     folder_date_mismatches: [],// folder date differs from the match's UTC start date
     multi_folder_matches: [],  // one match spread over several day folders
+    mixed_maps: [],            // a match (or one file) that names more than one map_id
     unknown_maps: [],
     unknown_events: [],
     points_outside_map: 0,
@@ -107,6 +108,10 @@ export function buildDataset (inputs, { maps = {} } = {}) {
   for (const [matchId, journeys] of [...byMatch].sort((a, b) => a[0].localeCompare(b[0]))) {
     const mapId = journeys[0].mapId
     const map = maps[mapId]
+
+    // One match, one map: every row of every journey should name the same map_id.
+    const mapIdsSeen = [...new Set(journeys.flatMap(j => j.mapIds ?? [j.mapId]))].sort()
+    if (mapIdsSeen.length > 1) health.mixed_maps.push({ match_id: matchId, map_ids: mapIdsSeen })
     if (!map) unknownMaps.add(mapId)
 
     let start = Infinity; let end = -Infinity

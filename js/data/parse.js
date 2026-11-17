@@ -77,8 +77,8 @@ export function cleanMatchId (matchId) {
  * Parses one journey file.
  *
  * @param {ArrayBuffer} buffer  the whole file
- * @returns {Promise<{ userId: string, matchId: string, mapId: string,
- *   rows: { t: number, x: number, y: number, z: number, event: string }[] }>}
+ * @returns {Promise<{ userId: string, matchId: string, mapId: string, mapIds: string[],
+ *   tsUnit: 's' | 'ms', rows: { t: number, x: number, y: number, z: number, event: string }[] }>}
  *   t is Unix seconds; rows keep file order (several samples can share one second).
  */
 export async function parseJourneyFile (buffer) {
@@ -92,10 +92,17 @@ export async function parseJourneyFile (buffer) {
     if (!(column in first)) throw new Error(`Missing column: ${column}`)
   }
 
+  // Kept for the audit: every map_id the file mentions (should be exactly one), and the
+  // unit the raw ts values were stored in.
+  const mapIds = [...new Set(raw.map(r => String(r.map_id)))].sort()
+  const firstTs = first.ts instanceof Date ? first.ts.getTime() : Number(first.ts)
+
   return {
     userId: String(first.user_id),
     matchId: cleanMatchId(first.match_id),
     mapId: String(first.map_id),
+    mapIds,
+    tsUnit: firstTs < SECONDS_LIMIT ? 's' : 'ms',
     rows: raw.map(r => ({
       t: toUnixSeconds(r.ts),
       x: Number(r.x),
