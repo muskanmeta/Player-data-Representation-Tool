@@ -2,9 +2,13 @@
 
 A browser tool for Level Designers: see where players move, fight, loot and die to the storm on each LILA BLACK map, and which areas they ignore. No tables and no engineer needed.
 
-**Live:** _add the Cloudflare Pages URL here after the first deploy_
+**Live:** https://playersjourney.muskanbuilds.workers.dev/
 
-- [ARCHITECTURE.md](ARCHITECTURE.md): stack, data flow, coordinate mapping, assumptions and trade-offs (one page)
+**Walkthrough video (4 min, every feature):** https://github.com/muskanmeta/Player-data-Representation-Tool/blob/main/docs/walkthrough.mp4 (file in the repo: [docs/walkthrough.mp4](docs/walkthrough.mp4))
+
+**Where to start:** to use the tool, open the live link or watch the video. To see how it works and why, read [ARCHITECTURE.md](ARCHITECTURE.md). It starts in plain language and is written for level designers and engineers alike.
+
+- [ARCHITECTURE.md](ARCHITECTURE.md): stack, data flow, coordinate mapping (with a worked example), assumptions and trade-offs (one page)
 - [INSIGHTS.md](INSIGHTS.md): three findings about the game, made with this tool
 - [tools/README.md](tools/README.md): the data tools and every column they write
 
@@ -54,13 +58,16 @@ There's nothing to install: the libraries are copied into `vendor/`, so the app 
 
 ## Setup and running locally
 
+You need **Node.js 22+** (only for the local server, tests and data tools) and a modern browser. There is no `npm install` step.
+
 ```bash
-git clone <this repo> && cd <repo>
+git clone https://github.com/muskanmeta/Player-data-Representation-Tool.git
+cd Player-data-Representation-Tool
 git config core.hooksPath .githooks   # once per clone: enables the repo's git hooks
-npm run serve                         # http://localhost:8000
+npm run serve                         # then open http://localhost:8000
 ```
 
-Browsers block ES modules on `file://`, so the folder must be served. `tools/serve.mjs` is a dependency-free static server.
+The bundled 5-day sample loads on its own. Double-clicking `index.html` won't work, because browsers block JavaScript modules opened from `file://`, so the folder has to be served. `tools/serve.mjs` is a small static server with no dependencies.
 
 ## Tests
 
@@ -92,11 +99,18 @@ Raw data is never committed (`.gitignore`); only the processed `data/default/dat
 
 The site is static: the repo root is the site.
 
-**Cloudflare Pages:** connect the repo, framework preset **None**, build command **empty**, output directory **`/`**. Every pushed branch gets a preview URL. Netlify, Vercel or any static host works the same way.
+**Cloudflare Workers (static assets):** the live site is a Worker with no script, serving the repo root as static files ([wrangler.jsonc](wrangler.jsonc)). The Worker is connected to this GitHub repo, so every push to `main` deploys; other branches get preview URLs. [.assetsignore](.assetsignore) keeps tests, tools, docs and config out of the served site. Netlify, Vercel or any static host works the same way: no build command, output directory `/`.
 
 ## Environment variables
 
-None. There is no backend, API key or build step.
+None are needed to run or deploy the app: there is no backend, API key or build step.
+
+Two optional variables are used by the tests only:
+
+| Variable | Used by | Effect |
+|---|---|---|
+| `LILA_DATA` | `npm test` | Path to a raw `player_data` folder; also runs the tests that read real data files |
+| `CHECK_LIVE` | `npm test` | Set to `1` to also check that the live site responds (needs network) |
 
 ## Project structure
 
