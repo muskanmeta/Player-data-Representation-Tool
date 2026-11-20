@@ -13,3 +13,5 @@ package.json
 package-lock.json
 wrangler.jsonc
 *.md
+# The walkthrough video lives in the repo only: it is larger than Cloudflare's 25 MiB per-file limit.
+docs
